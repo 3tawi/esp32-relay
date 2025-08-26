@@ -1,4 +1,3 @@
-
 #include <Arduino.h>
 
 #undef LED_BUILTIN
@@ -18,57 +17,42 @@
 #define relay_7 0x4C
 #define relay_8 0xE
 
-int relay_1_pin = 23;
-int relay_2_pin = 22;
-int relay_3_pin = 21;
-int relay_4_pin = 19;
-int relay_5_pin = 14;
-int relay_6_pin = 27;
-int relay_7_pin = 26;
-int relay_8_pin = 25;
-
-bool relay_state_1 = false;
-bool relay_state_2 = false;
-bool relay_state_3 = false;
-bool relay_state_4 = false;
-bool relay_state_5 = false;
-bool relay_state_6 = false;
-bool relay_state_7 = false;
-bool relay_state_8 = false;
+int relay_pin[8] = {23, 22, 21, 19, 25, 26, 27, 14};
+bool relay_state[8];
 
 void SetCommand(uint8_t Comd) {
   switch(Comd) {
     case relay_1:
-      relay_state_1 = !relay_state_1;
-      digitalWrite(relay_1_pin, relay_state_1);
+      relay_state[0] = !relay_state[0];
+      digitalWrite(relay_pin[0], relay_state[0]);
       break;
     case relay_2:
-      relay_state_2 = !relay_state_2;
-      digitalWrite(relay_2_pin, relay_state_2);
+      relay_state[1] = !relay_state[1];
+      digitalWrite(relay_pin[1], relay_state[1]);
       break;
     case relay_3:
-      relay_state_3 = !relay_state_3;
-      digitalWrite(relay_3_pin, relay_state_3);
+      relay_state[2] = !relay_state[2];
+      digitalWrite(relay_pin[2], relay_state[2]);
       break;
     case relay_4:
-      relay_state_4 = !relay_state_4;
-      digitalWrite(relay_4_pin, relay_state_4);
+      relay_state[3] = !relay_state[3];
+      digitalWrite(relay_pin[3], relay_state[3]);
       break;
     case relay_5:
-      relay_state_5 = !relay_state_5;
-      digitalWrite(relay_5_pin, relay_state_5);
+      relay_state[4] = !relay_state[4];
+      digitalWrite(relay_pin[4], relay_state[4]);
       break;
     case relay_6:
-      relay_state_6 = !relay_state_6;
-      digitalWrite(relay_6_pin, relay_state_6);
+      relay_state[5] = !relay_state[5];
+      digitalWrite(relay_pin[5], relay_state[5]);
       break;
     case relay_7:
-      relay_state_7 = !relay_state_7;
-      digitalWrite(relay_7_pin, relay_state_7);
+      relay_state[6] = !relay_state[6];
+      digitalWrite(relay_pin[6], relay_state[6]);
       break;
     case relay_8:
-      relay_state_8 = !relay_state_8;
-      digitalWrite(relay_8_pin, relay_state_8);
+      relay_state[7] = !relay_state[7];
+      digitalWrite(relay_pin[7], relay_state[7]);
       break;
   }
 
@@ -89,14 +73,11 @@ void irReceive() {
 void setup() {
   Serial.begin(115200);
   delay(2500);
-  pinMode(relay_1_pin, OUTPUT);
-  pinMode(relay_2_pin, OUTPUT);
-  pinMode(relay_3_pin, OUTPUT);
-  pinMode(relay_4_pin, OUTPUT);
-  pinMode(relay_5_pin, OUTPUT);
-  pinMode(relay_6_pin, OUTPUT);
-  pinMode(relay_7_pin, OUTPUT);
-  pinMode(relay_8_pin, OUTPUT);
+  for ( int j=0; j<8;j++) {
+    pinMode(relay_pin[j], OUTPUT);
+    relay_state[j] = true;
+    digitalWrite(relay_pin[j], HIGH);
+  }
   IrReceiver.begin(IR_RECEIVE_PIN, ENABLE_LED_FEEDBACK); // data pin 13
 }
 
